@@ -25,7 +25,15 @@ predicateAtom
     ;
 
 selectors
-    : ('SKIP' number)? ('LIMIT' number)?
+    : skipSelector? limitSelector?
+    ;
+
+limitSelector
+    : 'LIMIT' number
+    ;
+
+skipSelector
+    : 'SKIP' number
     ;
 
 identifier

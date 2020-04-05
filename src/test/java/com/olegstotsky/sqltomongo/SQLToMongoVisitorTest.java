@@ -112,4 +112,44 @@ public class SQLToMongoVisitorTest {
         SQLToMongoVisitor visitor = new SQLToMongoVisitor();
         assertEquals("db.user.find({age : { eq: 5}, $or: [{height : { eq: 7}}, {age : { eq: 10}}]})", visitor.visit(parser.sqlQuery()));
     }
+
+    @Test
+    public void sqlQueryWithSimpleLimit() throws IOException {
+        String input = "SELECT * FROM user LIMIT 10";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({}).limit(10)", visitor.visit(parser.sqlQuery()));
+    }
+
+    @Test
+    public void sqlQueryWithSimpleSkip() throws IOException {
+        String input = "SELECT * FROM user SKIP 10";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({}).skip(10)", visitor.visit(parser.sqlQuery()));
+    }
+
+    @Test
+    public void sqlQueryWithSimpleSkipAndLimit() throws IOException {
+        String input = "SELECT * FROM user SKIP 10 LIMIT 5";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({}).skip(10).limit(5)", visitor.visit(parser.sqlQuery()));
+    }
+
+    @Test
+    public void sqlQueryWithSkipLimitAndPredicates() throws IOException {
+        String input = "SELECT * FROM user WHERE age = 5 AND (height = 7 OR age=10) SKIP 10 LIMIT 5";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({age : { eq: 5}, $or: [{height : { eq: 7}}, {age : { eq: 10}}]}).skip(10).limit(5)", visitor.visit(parser.sqlQuery()));
+    }
 }

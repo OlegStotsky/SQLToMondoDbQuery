@@ -19,6 +19,7 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
             result.append(visitIdList(ctx.idList()));
         }
         result.append(")");
+        result.append(visitSelectors(ctx.selectors()));
         return result.toString();
     }
 
@@ -137,7 +138,24 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
 
     @Override
     public String visitSelectors(SQLParser.SelectorsContext ctx) {
-        return null;
+        StringBuilder builder = new StringBuilder();
+        if (ctx.skipSelector() != null) {
+            builder.append(visitSkipSelector(ctx.skipSelector()));
+        }
+        if (ctx.limitSelector() != null) {
+            builder.append(visitLimitSelector(ctx.limitSelector()));
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String visitLimitSelector(SQLParser.LimitSelectorContext ctx) {
+        return String.format(".limit(%d)", Integer.parseInt(visitNumber(ctx.number())));
+    }
+
+    @Override
+    public String visitSkipSelector(SQLParser.SkipSelectorContext ctx) {
+        return String.format(".skip(%d)", Integer.parseInt(visitNumber(ctx.number())));
     }
 
     @Override

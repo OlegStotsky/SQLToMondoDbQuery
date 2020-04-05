@@ -49,25 +49,47 @@ public interface SQLVisitor<T> extends ParseTreeVisitor<T> {
 	/**
 	 * Visit a parse tree produced by {@link SQLParser#predicateAtom}.
 	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPredicateAtom(SQLParser.PredicateAtomContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SQLParser#selectors}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSelectors(SQLParser.SelectorsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SQLParser#identifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdentifier(SQLParser.IdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SQLParser#number}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
+     * @return the visitor result
+     */
+    T visitPredicateAtom(SQLParser.PredicateAtomContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#selectors}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitSelectors(SQLParser.SelectorsContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#limitSelector}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitLimitSelector(SQLParser.LimitSelectorContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#skipSelector}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitSkipSelector(SQLParser.SkipSelectorContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#identifier}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitIdentifier(SQLParser.IdentifierContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#number}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
 	T visitNumber(SQLParser.NumberContext ctx);
 }

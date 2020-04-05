@@ -78,26 +78,61 @@ public interface SQLListener extends ParseTreeListener {
 	 */
 	void exitPredicateAtom(SQLParser.PredicateAtomContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLParser#selectors}.
-	 * @param ctx the parse tree
-	 */
-	void enterSelectors(SQLParser.SelectorsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SQLParser#selectors}.
-	 * @param ctx the parse tree
-	 */
-	void exitSelectors(SQLParser.SelectorsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SQLParser#identifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdentifier(SQLParser.IdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SQLParser#identifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdentifier(SQLParser.IdentifierContext ctx);
-	/**
+     * Enter a parse tree produced by {@link SQLParser#selectors}.
+     * @param ctx the parse tree
+     */
+    void enterSelectors(SQLParser.SelectorsContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link SQLParser#selectors}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitSelectors(SQLParser.SelectorsContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link SQLParser#limitSelector}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterLimitSelector(SQLParser.LimitSelectorContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link SQLParser#limitSelector}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitLimitSelector(SQLParser.LimitSelectorContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link SQLParser#skipSelector}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterSkipSelector(SQLParser.SkipSelectorContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link SQLParser#skipSelector}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitSkipSelector(SQLParser.SkipSelectorContext ctx);
+
+    /**
+     * Enter a parse tree produced by {@link SQLParser#identifier}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterIdentifier(SQLParser.IdentifierContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link SQLParser#identifier}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitIdentifier(SQLParser.IdentifierContext ctx);
+
+    /**
 	 * Enter a parse tree produced by {@link SQLParser#number}.
 	 * @param ctx the parse tree
 	 */
