@@ -125,7 +125,7 @@ public class SQLToMongoVisitorTest {
 
     @Test
     public void sqlQueryWithSimpleSkip() throws IOException {
-        String input = "SELECT * FROM user SKIP 10";
+        String input = "SELECT * FROM user OFFSET 10";
         SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         SQLParser parser = new SQLParser(tokenStream);
@@ -135,7 +135,7 @@ public class SQLToMongoVisitorTest {
 
     @Test
     public void sqlQueryWithSimpleSkipAndLimit() throws IOException {
-        String input = "SELECT * FROM user SKIP 10 LIMIT 5";
+        String input = "SELECT * FROM user OFFSET 10 LIMIT 5";
         SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         SQLParser parser = new SQLParser(tokenStream);
@@ -145,7 +145,7 @@ public class SQLToMongoVisitorTest {
 
     @Test
     public void sqlQueryWithSkipLimitAndPredicates() throws IOException {
-        String input = "SELECT * FROM user WHERE age = 5 AND (height = 7 OR age=10) SKIP 10 LIMIT 5";
+        String input = "SELECT * FROM user WHERE age = 5 AND (height = 7 OR age=10) OFFSET 10 LIMIT 5";
         SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         SQLParser parser = new SQLParser(tokenStream);
@@ -171,5 +171,25 @@ public class SQLToMongoVisitorTest {
         SQLParser parser = new SQLParser(tokenStream);
         SQLToMongoVisitor visitor = new SQLToMongoVisitor();
         assertEquals("db.user.find({age : { eq: 5}}, {id: 1, age: 1, height: 1})", visitor.visit(parser.sqlQuery()));
+    }
+
+    @Test
+    public void sqlQueryFromTestTaskOne() throws IOException {
+        String input = "SELECT name, surname FROM collection";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.collection.find({}, {name: 1, surname: 1})", visitor.visit(parser.sqlQuery()));
+    }
+
+    @Test
+    public void sqlQueryFromTestTaskTwo() throws IOException {
+        String input = "SELECT * FROM collection OFFSET 5 LIMIT 10";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.collection.find({}).skip(5).limit(10)", visitor.visit(parser.sqlQuery()));
     }
 }

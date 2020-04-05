@@ -87,16 +87,22 @@ public class SQLBaseListener implements SQLListener {
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPredicateAtom(SQLParser.PredicateAtomContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPredicateAtom(SQLParser.PredicateAtomContext ctx) { }
-	/**
-	 * {@inheritDoc}
+     */
+    @Override
+    public void enterPredicateAtom(SQLParser.PredicateAtomContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void exitPredicateAtom(SQLParser.PredicateAtomContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <p>The default implementation does nothing.</p>
      */
@@ -162,16 +168,22 @@ public class SQLBaseListener implements SQLListener {
      * {@inheritDoc}
      *
      * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIdentifier(SQLParser.IdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumber(SQLParser.NumberContext ctx) { }
-	/**
-	 * {@inheritDoc}
+     */
+    @Override
+    public void exitIdentifier(SQLParser.IdentifierContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation does nothing.</p>
+     */
+    @Override
+    public void enterNumber(SQLParser.NumberContext ctx) {
+    }
+
+    /**
+     * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */

@@ -39,16 +39,20 @@ public interface SQLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPredicateExpr(SQLParser.PredicateExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SQLParser#predicateTerm}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPredicateTerm(SQLParser.PredicateTermContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SQLParser#predicateAtom}.
-	 * @param ctx the parse tree
+    T visitPredicateExpr(SQLParser.PredicateExprContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#predicateTerm}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    T visitPredicateTerm(SQLParser.PredicateTermContext ctx);
+
+    /**
+     * Visit a parse tree produced by {@link SQLParser#predicateAtom}.
+     *
+     * @param ctx the parse tree
      * @return the visitor result
      */
     T visitPredicateAtom(SQLParser.PredicateAtomContext ctx);
@@ -91,5 +95,5 @@ public interface SQLVisitor<T> extends ParseTreeVisitor<T> {
      * @param ctx the parse tree
      * @return the visitor result
      */
-	T visitNumber(SQLParser.NumberContext ctx);
+    T visitNumber(SQLParser.NumberContext ctx);
 }

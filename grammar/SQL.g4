@@ -33,7 +33,7 @@ limitSelector
     ;
 
 skipSelector
-    : 'SKIP' number
+    : 'OFFSET' number
     ;
 
 identifier

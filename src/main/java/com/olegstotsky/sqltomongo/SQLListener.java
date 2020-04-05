@@ -68,17 +68,21 @@ public interface SQLListener extends ParseTreeListener {
 	 */
 	void exitPredicateTerm(SQLParser.PredicateTermContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SQLParser#predicateAtom}.
-	 * @param ctx the parse tree
-	 */
-	void enterPredicateAtom(SQLParser.PredicateAtomContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SQLParser#predicateAtom}.
-	 * @param ctx the parse tree
-	 */
-	void exitPredicateAtom(SQLParser.PredicateAtomContext ctx);
-	/**
+     * Enter a parse tree produced by {@link SQLParser#predicateAtom}.
+     * @param ctx the parse tree
+     */
+    void enterPredicateAtom(SQLParser.PredicateAtomContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link SQLParser#predicateAtom}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitPredicateAtom(SQLParser.PredicateAtomContext ctx);
+
+    /**
      * Enter a parse tree produced by {@link SQLParser#selectors}.
+     *
      * @param ctx the parse tree
      */
     void enterSelectors(SQLParser.SelectorsContext ctx);
@@ -133,13 +137,16 @@ public interface SQLListener extends ParseTreeListener {
     void exitIdentifier(SQLParser.IdentifierContext ctx);
 
     /**
-	 * Enter a parse tree produced by {@link SQLParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumber(SQLParser.NumberContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SQLParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumber(SQLParser.NumberContext ctx);
+     * Enter a parse tree produced by {@link SQLParser#number}.
+     *
+     * @param ctx the parse tree
+     */
+    void enterNumber(SQLParser.NumberContext ctx);
+
+    /**
+     * Exit a parse tree produced by {@link SQLParser#number}.
+     *
+     * @param ctx the parse tree
+     */
+    void exitNumber(SQLParser.NumberContext ctx);
 }

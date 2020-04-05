@@ -15,11 +15,10 @@ import java.util.List;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SQLParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
+    static {
+        RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION);
+    }
 
-    protected static final DFA[] _decisionToDFA;
-    protected static final PredictionContextCache _sharedContextCache =
-            new PredictionContextCache();
     public static final int
             T__0 = 1, RELATIONAL_OPERATOR = 2, LETTER = 3, DIGIT = 4, SELECT = 5, FROM = 6, STAR = 7,
             COMMA = 8, WHERE = 9, OR = 10, AND = 11, LPAREN = 12, RPAREN = 13, LIMIT = 14, SPACE = 15;
@@ -28,6 +27,7 @@ public class SQLParser extends Parser {
             RULE_predicateExpr = 4, RULE_predicateTerm = 5, RULE_predicateAtom = 6,
             RULE_selectors = 7, RULE_limitSelector = 8, RULE_skipSelector = 9, RULE_identifier = 10,
             RULE_number = 11;
+    public static final String[] ruleNames = makeRuleNames();
     public static final String _serializedATN =
             "\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21e\4\2\t\2\4\3\t" +
                     "\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4" +
@@ -53,32 +53,30 @@ public class SQLParser extends Parser {
                     "W\25\3\2\2\2X\\\7\5\2\2Y[\t\2\2\2ZY\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3" +
                     "\2\2\2]\27\3\2\2\2^\\\3\2\2\2_a\7\6\2\2`_\3\2\2\2ab\3\2\2\2b`\3\2\2\2" +
                     "bc\3\2\2\2c\31\3\2\2\2\r\37\",/9@JMP\\b";
-    public static final String[] ruleNames = makeRuleNames();
-
-    private static String[] makeLiteralNames() {
-        return new String[]{
-                null, "'SKIP'", null, null, null, "'SELECT'", "'FROM'", "'*'", "','",
-                "'WHERE'", "'OR'", "'AND'", "'('", "')'", "'LIMIT'"
-        };
-    }
-
+    public static final ATN _ATN =
+            new ATNDeserializer().deserialize(_serializedATN.toCharArray());
+    protected static final DFA[] _decisionToDFA;
+    protected static final PredictionContextCache _sharedContextCache =
+            new PredictionContextCache();
     private static final String[] _LITERAL_NAMES = makeLiteralNames();
 
-    private static String[] makeSymbolicNames() {
-		return new String[] {
-			null, null, "RELATIONAL_OPERATOR", "LETTER", "DIGIT", "SELECT", "FROM", 
-			"STAR", "COMMA", "WHERE", "OR", "AND", "LPAREN", "RPAREN", "LIMIT", "SPACE"
-		};
-	}
-	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+    static {
+        _decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
+        for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
+            _decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
+        }
+    }
 
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
+    private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
+    public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+    /**
+     * @deprecated Use {@link #VOCABULARY} instead.
+     */
+    @Deprecated
+    public static final String[] tokenNames;
+
+    static {
 		tokenNames = new String[_SYMBOLIC_NAMES.length];
 		for (int i = 0; i < tokenNames.length; i++) {
 			tokenNames[i] = VOCABULARY.getLiteralName(i);
@@ -111,138 +109,18 @@ public class SQLParser extends Parser {
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override
-	public String getSerializedATN() { return _serializedATN; }
-
-	@Override
-	public ATN getATN() { return _ATN; }
-
-	public SQLParser(TokenStream input) {
-		super(input);
-		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
-	}
-
-	public static class SqlQueryContext extends ParserRuleContext {
-		public TerminalNode SELECT() { return getToken(SQLParser.SELECT, 0); }
-		public IdListContext idList() {
-			return getRuleContext(IdListContext.class,0);
-		}
-		public TerminalNode FROM() { return getToken(SQLParser.FROM, 0); }
-		public TableNameContext tableName() {
-			return getRuleContext(TableNameContext.class,0);
-		}
-		public PredicatesContext predicates() {
-			return getRuleContext(PredicatesContext.class,0);
-		}
-		public SelectorsContext selectors() {
-			return getRuleContext(SelectorsContext.class,0);
-		}
-		public SqlQueryContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_sqlQuery; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SQLListener ) ((SQLListener)listener).enterSqlQuery(this);
-		}
-
-        @Override
-        public void exitRule(ParseTreeListener listener) {
-            if (listener instanceof SQLListener) ((SQLListener) listener).exitSqlQuery(this);
-        }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitSqlQuery(this);
-            else return visitor.visitChildren(this);
-        }
+    public String getSerializedATN() {
+        return _serializedATN;
     }
 
-    public static final ATN _ATN =
-            new ATNDeserializer().deserialize(_serializedATN.toCharArray());
-
-    public static class TableNameContext extends ParserRuleContext {
-        public IdentifierContext identifier() {
-            return getRuleContext(IdentifierContext.class, 0);
-        }
-
-        public TableNameContext(ParserRuleContext parent, int invokingState) {
-            super(parent, invokingState);
-        }
-
-        @Override
-        public int getRuleIndex() {
-            return RULE_tableName;
-        }
-
-        @Override
-        public void enterRule(ParseTreeListener listener) {
-            if (listener instanceof SQLListener) ((SQLListener) listener).enterTableName(this);
-        }
-
-        @Override
-        public void exitRule(ParseTreeListener listener) {
-            if (listener instanceof SQLListener) ((SQLListener) listener).exitTableName(this);
-        }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitTableName(this);
-            else return visitor.visitChildren(this);
-        }
+    @Override
+    public ATN getATN() {
+        return _ATN;
     }
 
-    static {
-        _decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
-        for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
-            _decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
-        }
-    }
-
-    public static class IdListContext extends ParserRuleContext {
-        public TerminalNode STAR() {
-            return getToken(SQLParser.STAR, 0);
-        }
-
-        public List<IdentifierContext> identifier() {
-            return getRuleContexts(IdentifierContext.class);
-        }
-
-        public IdentifierContext identifier(int i) {
-            return getRuleContext(IdentifierContext.class, i);
-        }
-
-        public List<TerminalNode> COMMA() {
-            return getTokens(SQLParser.COMMA);
-        }
-
-        public TerminalNode COMMA(int i) {
-            return getToken(SQLParser.COMMA, i);
-        }
-
-        public IdListContext(ParserRuleContext parent, int invokingState) {
-            super(parent, invokingState);
-        }
-
-        @Override
-        public int getRuleIndex() {
-            return RULE_idList;
-        }
-
-        @Override
-        public void enterRule(ParseTreeListener listener) {
-            if (listener instanceof SQLListener) ((SQLListener) listener).enterIdList(this);
-        }
-
-        @Override
-        public void exitRule(ParseTreeListener listener) {
-            if (listener instanceof SQLListener) ((SQLListener) listener).exitIdList(this);
-        }
-
-        @Override
-        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-            if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitIdList(this);
-            else return visitor.visitChildren(this);
-        }
+    public SQLParser(TokenStream input) {
+        super(input);
+        _interp = new ParserATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
     }
 
     private static String[] makeRuleNames() {
@@ -250,6 +128,20 @@ public class SQLParser extends Parser {
                 "sqlQuery", "tableName", "idList", "predicates", "predicateExpr", "predicateTerm",
                 "predicateAtom", "selectors", "limitSelector", "skipSelector", "identifier",
                 "number"
+        };
+    }
+
+    private static String[] makeLiteralNames() {
+        return new String[]{
+                null, "'OFFSET'", null, null, null, "'SELECT'", "'FROM'", "'*'", "','",
+                "'WHERE'", "'OR'", "'AND'", "'('", "')'", "'LIMIT'"
+        };
+    }
+
+    private static String[] makeSymbolicNames() {
+        return new String[]{
+                null, null, "RELATIONAL_OPERATOR", "LETTER", "DIGIT", "SELECT", "FROM",
+                "STAR", "COMMA", "WHERE", "OR", "AND", "LPAREN", "RPAREN", "LIMIT", "SPACE"
         };
     }
 
@@ -287,7 +179,7 @@ public class SQLParser extends Parser {
                     }
                     break;
                 }
-            }
+			}
 		}
 		catch (RecognitionException re) {
 			_localctx.exception = re;
@@ -303,8 +195,8 @@ public class SQLParser extends Parser {
 	public final TableNameContext tableName() throws RecognitionException {
 		TableNameContext _localctx = new TableNameContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_tableName);
-		try {
-			enterOuterAlt(_localctx, 1);
+        try {
+            enterOuterAlt(_localctx, 1);
             {
                 setState(34);
                 identifier();
@@ -325,7 +217,7 @@ public class SQLParser extends Parser {
 		IdListContext _localctx = new IdListContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_idList);
 		int _la;
-		try {
+        try {
             setState(45);
             _errHandler.sync(this);
             switch (_input.LA(1)) {
@@ -337,7 +229,7 @@ public class SQLParser extends Parser {
                 }
                 break;
                 case LETTER:
-				enterOuterAlt(_localctx, 2);
+                    enterOuterAlt(_localctx, 2);
                 {
                     setState(37);
                     identifier();
@@ -357,13 +249,12 @@ public class SQLParser extends Parser {
                         _errHandler.sync(this);
                         _la = _input.LA(1);
                     }
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
+                }
+                break;
+                default:
+                    throw new NoViableAltException(this);
+            }
+        } catch (RecognitionException re) {
             _localctx.exception = re;
             _errHandler.reportError(this, re);
             _errHandler.recover(this, re);
@@ -430,10 +321,10 @@ public class SQLParser extends Parser {
         return _localctx;
     }
 
-	public final PredicateTermContext predicateTerm() throws RecognitionException {
-		PredicateTermContext _localctx = new PredicateTermContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_predicateTerm);
-		try {
+    public final PredicateTermContext predicateTerm() throws RecognitionException {
+        PredicateTermContext _localctx = new PredicateTermContext(_ctx, getState());
+        enterRule(_localctx, 10, RULE_predicateTerm);
+        try {
             setState(62);
             _errHandler.sync(this);
             switch (getInterpreter().adaptivePredict(_input, 5, _ctx)) {
@@ -456,7 +347,7 @@ public class SQLParser extends Parser {
                 }
                 break;
             }
-        }
+		}
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
@@ -508,13 +399,13 @@ public class SQLParser extends Parser {
             exitRule();
         }
         return _localctx;
-    }
+	}
 
 	public final SelectorsContext selectors() throws RecognitionException {
 		SelectorsContext _localctx = new SelectorsContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_selectors);
 		int _la;
-		try {
+        try {
             enterOuterAlt(_localctx, 1);
             {
                 setState(75);
@@ -631,7 +522,7 @@ public class SQLParser extends Parser {
         return _localctx;
     }
 
-	public final NumberContext number() throws RecognitionException {
+    public final NumberContext number() throws RecognitionException {
         NumberContext _localctx = new NumberContext(_ctx, getState());
         enterRule(_localctx, 22, RULE_number);
         int _la;
@@ -663,17 +554,146 @@ public class SQLParser extends Parser {
         return _localctx;
     }
 
+    public static class SqlQueryContext extends ParserRuleContext {
+        public TerminalNode SELECT() {
+            return getToken(SQLParser.SELECT, 0);
+        }
+
+        public IdListContext idList() {
+            return getRuleContext(IdListContext.class, 0);
+        }
+
+        public TerminalNode FROM() {
+            return getToken(SQLParser.FROM, 0);
+        }
+
+        public TableNameContext tableName() {
+            return getRuleContext(TableNameContext.class, 0);
+        }
+
+        public PredicatesContext predicates() {
+            return getRuleContext(PredicatesContext.class, 0);
+        }
+
+        public SelectorsContext selectors() {
+            return getRuleContext(SelectorsContext.class, 0);
+        }
+
+        public SqlQueryContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_sqlQuery;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof SQLListener) ((SQLListener) listener).enterSqlQuery(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof SQLListener) ((SQLListener) listener).exitSqlQuery(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitSqlQuery(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
+    public static class TableNameContext extends ParserRuleContext {
+        public TableNameContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        public IdentifierContext identifier() {
+            return getRuleContext(IdentifierContext.class, 0);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_tableName;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof SQLListener) ((SQLListener) listener).enterTableName(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof SQLListener) ((SQLListener) listener).exitTableName(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitTableName(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
+    public static class IdListContext extends ParserRuleContext {
+        public IdListContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        public TerminalNode STAR() {
+            return getToken(SQLParser.STAR, 0);
+        }
+
+        public List<IdentifierContext> identifier() {
+            return getRuleContexts(IdentifierContext.class);
+        }
+
+        public IdentifierContext identifier(int i) {
+            return getRuleContext(IdentifierContext.class, i);
+        }
+
+        public List<TerminalNode> COMMA() {
+            return getTokens(SQLParser.COMMA);
+        }
+
+        public TerminalNode COMMA(int i) {
+            return getToken(SQLParser.COMMA, i);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_idList;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+            if (listener instanceof SQLListener) ((SQLListener) listener).enterIdList(this);
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+            if (listener instanceof SQLListener) ((SQLListener) listener).exitIdList(this);
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+            if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitIdList(this);
+            else return visitor.visitChildren(this);
+        }
+    }
+
     public static class PredicatesContext extends ParserRuleContext {
+        public PredicatesContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
         public TerminalNode WHERE() {
             return getToken(SQLParser.WHERE, 0);
         }
 
         public PredicateExprContext predicateExpr() {
             return getRuleContext(PredicateExprContext.class, 0);
-        }
-
-        public PredicatesContext(ParserRuleContext parent, int invokingState) {
-            super(parent, invokingState);
         }
 
         @Override
@@ -1004,5 +1024,5 @@ public class SQLParser extends Parser {
             if (visitor instanceof SQLVisitor) return ((SQLVisitor<? extends T>) visitor).visitNumber(this);
             else return visitor.visitChildren(this);
         }
-    }
+	}
 }
