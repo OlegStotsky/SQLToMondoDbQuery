@@ -114,7 +114,8 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
                 haveOuterBracetsForExprBeenProduced = true;
             }
         } else {
-        }//TODO
+            builder.append(visitPredicateExpr(ctx.predicateExpr()));
+        }
         return builder.toString();
     }
 

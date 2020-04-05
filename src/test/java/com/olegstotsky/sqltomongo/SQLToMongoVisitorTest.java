@@ -102,4 +102,14 @@ public class SQLToMongoVisitorTest {
         SQLToMongoVisitor visitor = new SQLToMongoVisitor();
         assertEquals("db.user.find({$or: [{age : { eq: 5}}, {height : { eq: 7}, {age : { eq: 3}, age : { eq: 10}}}]})", visitor.visit(parser.sqlQuery()));
     }
+
+    @Test
+    public void sqlQueryWithOrNestedInAnd() throws IOException {
+        String input = "SELECT * FROM user WHERE age = 5 AND (height = 7 OR age=10)";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({age : { eq: 5}, $or: [{height : { eq: 7}}, {age : { eq: 10}}]})", visitor.visit(parser.sqlQuery()));
+    }
 }
