@@ -2,7 +2,10 @@ package com.olegstotsky.sqltomongo;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
-public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implements SQLVisitor<String>   {
+public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implements SQLVisitor<String> {
+    private boolean haveOuterBracetsForExprBeenProduced = false;
+    private boolean justOneLevelBelowOR = false;
+
     @Override
     public String visitSqlQuery(SQLParser.SqlQueryContext ctx) {
         StringBuilder result = new StringBuilder();
@@ -11,8 +14,10 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
         result.append(".");
         result.append("find(");
         result.append(visitPredicates(ctx.predicates()));
-        result.append(", ");
-        result.append(visitIdList(ctx.idList()));
+        if (ctx.idList().STAR() == null) {
+            result.append(", ");
+            result.append(visitIdList(ctx.idList()));
+        }
         result.append(")");
         return result.toString();
     }
@@ -26,42 +31,70 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
     public String visitIdList(SQLParser.IdListContext ctx) {
         StringBuilder result = new StringBuilder();
         result.append("{");
-        ctx.identifier().forEach(id -> {
-            result.append(visitIdentifier(id) + ": 1, ");
-        });
+        ctx.identifier().forEach(id -> result.append(visitIdentifier(id) + ": 1, "));
         result.append("}");
         return result.toString();
     }
 
     @Override
     public String visitPredicates(SQLParser.PredicatesContext ctx) {
-        return visitPredicateExpr(ctx.predicateExpr());
+        if (ctx == null) {
+            return "{}";
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(visitPredicateExpr(ctx.predicateExpr()));
+        return builder.toString();
     }
 
     @Override
     public String visitPredicateExpr(SQLParser.PredicateExprContext ctx) {
         StringBuilder builder = new StringBuilder();
-        builder.append("{");
-        if (ctx.predicateExpr().size() == 0) {
+        if (ctx.predicateExpr() == null) {
             builder.append(visitPredicateTerm(ctx.predicateTerm()));
         } else {
+            boolean haveToAppendBracketToEnd = false;
+            if (!haveOuterBracetsForExprBeenProduced) {
+                builder.append("{");
+                haveToAppendBracketToEnd = true;
+                haveOuterBracetsForExprBeenProduced = true;
+            }
             builder.append("$or: ");
             builder.append("[");
+            justOneLevelBelowOR = true;
             builder.append(visitPredicateTerm(ctx.predicateTerm()));
+            justOneLevelBelowOR = true;
             builder.append(", ");
-            ctx.predicateExpr().forEach(expr -> {
-
-            });
+            builder.append(visitPredicateExpr(ctx.predicateExpr()));
+            builder.append("]");
+            if (haveToAppendBracketToEnd) {
+                builder.append("}");
+            }
         }
-        builder.append("}");
         return builder.toString();
     }
 
     @Override
     public String visitPredicateTerm(SQLParser.PredicateTermContext ctx) {
         StringBuilder builder = new StringBuilder();
-        if (ctx.predicateTerm().size() == 0) {
+        if (ctx.predicateTerm() == null) {
+            boolean haveToAppendBracket = false;
+            if (justOneLevelBelowOR) {
+                builder.append("{");
+                haveToAppendBracket = true;
+                justOneLevelBelowOR = false;
+            }
             builder.append(visitPredicateAtom(ctx.predicateAtom()));
+            if (haveToAppendBracket) {
+                builder.append("}");
+            }
+        } else {
+            haveOuterBracetsForExprBeenProduced = true;
+            justOneLevelBelowOR = false;
+            builder.append("{");
+            builder.append(visitPredicateAtom(ctx.predicateAtom()));
+            builder.append(", ");
+            builder.append(visitPredicateTerm(ctx.predicateTerm()));
+            builder.append("}");
         }
         return builder.toString();
     }
@@ -70,10 +103,18 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
     public String visitPredicateAtom(SQLParser.PredicateAtomContext ctx) {
         StringBuilder builder = new StringBuilder();
         if (ctx.predicateExpr() == null) {
+            if (!haveOuterBracetsForExprBeenProduced) {
+                builder.append("{");
+            }
             builder.append(visitIdentifier(ctx.identifier()));
             builder.append(" : ");
             builder.append(generateCodeForCondition(ctx.RELATIONAL_OPERATOR().getText(), ctx.number().getText()));
-        } else {}
+            if (!haveOuterBracetsForExprBeenProduced) {
+                builder.append("}");
+                haveOuterBracetsForExprBeenProduced = true;
+            }
+        } else {
+        }//TODO
         return builder.toString();
     }
 

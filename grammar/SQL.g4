@@ -15,10 +15,10 @@ predicates
     : 'WHERE' predicateExpr
     ;
 predicateExpr
-    : predicateTerm ('OR' predicateExpr)* | predicateTerm
+    : predicateTerm 'OR' predicateExpr | predicateTerm
     ;
 predicateTerm
-    : predicateAtom ('AND' predicateTerm)* | predicateAtom
+    : predicateAtom 'AND' predicateTerm | predicateAtom
     ;
 predicateAtom
     : identifier RELATIONAL_OPERATOR number | '(' predicateExpr ')'
