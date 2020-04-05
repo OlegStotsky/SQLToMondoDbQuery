@@ -32,7 +32,13 @@ public class SQLToMongoVisitor extends AbstractParseTreeVisitor<String> implemen
     public String visitIdList(SQLParser.IdListContext ctx) {
         StringBuilder result = new StringBuilder();
         result.append("{");
-        ctx.identifier().forEach(id -> result.append(visitIdentifier(id) + ": 1, "));
+        for (int i = 0; i < ctx.identifier().size(); ++i) {
+            if (i == ctx.identifier().size() - 1) {
+                result.append(visitIdentifier(ctx.identifier(i)) + ": 1");
+            } else {
+                result.append(visitIdentifier(ctx.identifier(i)) + ": 1, ");
+            }
+        }
         result.append("}");
         return result.toString();
     }

@@ -152,4 +152,24 @@ public class SQLToMongoVisitorTest {
         SQLToMongoVisitor visitor = new SQLToMongoVisitor();
         assertEquals("db.user.find({age : { eq: 5}, $or: [{height : { eq: 7}}, {age : { eq: 10}}]}).skip(10).limit(5)", visitor.visit(parser.sqlQuery()));
     }
+
+    @Test
+    public void sqlQueryWithProjections() throws IOException {
+        String input = "SELECT id, age, height FROM user";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({}, {id: 1, age: 1, height: 1})", visitor.visit(parser.sqlQuery()));
+    }
+
+    @Test
+    public void sqlQueryWithProjectionsAndSimplePredicate() throws IOException {
+        String input = "SELECT id, age, height FROM user WHERE age = 5";
+        SQLLexer lexer = new SQLLexer(CharStreams.fromStream(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        SQLParser parser = new SQLParser(tokenStream);
+        SQLToMongoVisitor visitor = new SQLToMongoVisitor();
+        assertEquals("db.user.find({age : { eq: 5}}, {id: 1, age: 1, height: 1})", visitor.visit(parser.sqlQuery()));
+    }
 }
